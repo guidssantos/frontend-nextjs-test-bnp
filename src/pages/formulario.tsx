@@ -9,24 +9,51 @@
  * - Lide com os possíveis erros
  */
 
+import {SubmitHandler, useForm} from 'react-hook-form'
 import styles from '@/styles/formulario.module.css';
+import { IUserCreate } from '@/types/user';
+import { useState } from 'react';
 
 export default function Form() {
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
 
-		console.log('submit');
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+	const {register, handleSubmit, formState: {errors}, reset } = useForm<IUserCreate>();
+	
+	 const onSubmit: SubmitHandler<IUserCreate> = async function(data: IUserCreate) {
+		setIsSubmitting(true);
+		try{
+			const response = await fetch('api/users/create', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
+
+			if(!response.ok) {
+				throw new Error('Erro ao enviar os dados');
+			} else{
+				alert('Dados enviados com sucesso!');
+				reset()
+			}
+		} catch (error: any) {
+			console.error('Erro:', error.message)
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.content}>
-				<form onSubmit={handleSubmit}>
-					<input type="text" placeholder="Name" />
-					<input type="email" placeholder="E-mail" />
-
-					<button type="submit" data-type="confirm">
-						Enviar
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<input type="text" placeholder="Name" {...register('name', {required: 'Nome é obrigatório', pattern: {value: /^[A-Za-z]+$/, message: 'O nome deve conter apenas letras'}  })} />
+						{errors.name && <span>{errors.name.message}</span>}
+					<input type="email" placeholder="E-mail" {...register('email', {required: 'E-mail é obrigatório'})} />
+						{errors.email && <span>{errors.email.message}</span>}
+					<button type="submit" data-type="confirm" disabled={isSubmitting} >
+						 {isSubmitting ? 'Enviando...' : 'Enviar'}
 					</button>
 				</form>
 			</div>
