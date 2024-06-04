@@ -8,30 +8,39 @@
  */
 
 import styles from '@/styles/context-api.module.css';
-import { IToastMessage } from '@/types/toast-message';
 import { ToastMessage } from '@/components/ToastMessage';
+import {  useMessage } from '@/contexts/MessageContext';
+import { useEffect } from 'react';
 
 export default function ContextApi() {
-	const messages: Array<IToastMessage> = [
-		{
-			id: '1',
-			message: 'Mensagem de sucesso',
-			type: 'success',
-		},
-		{
-			id: '2',
-			message: 'Mensagem de erro',
-			type: 'error',
-		},
-	];
+
+	const { messages, addMessage, removeMessage } = useMessage()
 
 	function handleSuccessButtonClick() {
-		alert('Method: handleSuccessButtonClick not implemented');
+		addMessage({
+			id: String(Date.now()),
+			message: 'Mensagem de sucesso',
+			type: 'success'
+		})
 	}
 
 	function handleErrorButtonClick() {
-		alert('Method: handleErrorButtonClick not implemented');
+		addMessage({
+			id: String(Date.now()),
+			message: 'Mensagem de erro',
+			type: 'error'
+		})
 	}
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			messages.forEach((message) => {
+				removeMessage(message.id)
+			});
+		}, 2000);
+
+		return () => clearTimeout(timer)
+	}, [messages, removeMessage])
 
 	return (
 		<>
