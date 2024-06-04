@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import styles from '@/styles/lista.module.css';
 import { ICity } from '@/types/city.d';
+import API_URL from '@/utils/config';
 
 export default function Lista({cities}: any) {
 	const [list, _] = useState<Array<ICity>>(cities || []);
@@ -38,7 +39,7 @@ export async function getStaticProps(){
 	console.log('test revalidate')
 	try{
 
-	const response = await fetch(`http://localhost:3000/api/cities/10`);
+	const response = await fetch(`${API_URL}/api/cities/10`);
 	const data = await response.json();
 
 	if(!response.ok){
