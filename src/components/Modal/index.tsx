@@ -19,6 +19,15 @@ type ModalProps = {
 	- Ao clicar no wrapper do modal, o modal deve ser fechado, porém esta ação deve ser ignorada caso o usuário clique em qualquer elemento dentro do modal
 */
 
+// Solução
+
+/*
+	Adicionei o "onClick={(e) => e.stopPropagation()}" para evitar que cliques
+	no conteúdo do modal sejam capazes de fechar o modal.
+	Assim, o modal só fechará quando o usuário clicar diretamente no wrapper
+	ou nos botões específicos que disparam o fechamento.
+*/
+
 export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props }) => {
 	function handleCloseClick(e: React.MouseEvent) {
 		props.onClose?.('click', e.target);
@@ -36,7 +45,7 @@ export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props 
 
 	return (
 		<div data-modal-wrapper className={styles.wrapper} onClick={handleCloseClick} onKeyDown={handleKeyDown}>
-			<div data-modal-container>
+			<div data-modal-container onClick={(e) => e.stopPropagation()}>
 				<header data-modal-header>
 					<h2>{title}</h2>
 
