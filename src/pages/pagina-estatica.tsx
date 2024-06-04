@@ -37,6 +37,7 @@ export default function Lista({cities}: any) {
 
 export async function getStaticProps(){
 	console.log('test revalidate')
+	console.log(API_URL, 'verify API_URL')
 	try{
 	const response = await fetch(`${API_URL}/api/cities/10`);
 	const data = await response.json();
