@@ -7,35 +7,15 @@
  * - A página deve ser atualizada a cada 1 minuto
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styles from '@/styles/lista.module.css';
 import { ICity } from '@/types/city.d';
 
-export default function Lista() {
-	const [list, setUsers] = useState<Array<ICity>>([
-		{
-			id: new Date().getTime().toString(),
-			name: 'São Paulo',
-		},
-	]);
+export default function Lista({cities}: any) {
+	const [list, _] = useState<Array<ICity>>(cities || []);
 
-	async function getList() {
-		try {
-			const response = await fetch('/api/cities/10');
-			const data = await response.json();
 
-			if (!response.ok) throw new Error('Erro ao obter os dados');
-
-			setUsers(data);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	useEffect(() => {
-		getList();
-	}, []);
 
 	return (
 		<div className={styles.container}>
@@ -52,4 +32,36 @@ export default function Lista() {
 			</div>
 		</div>
 	);
+}
+
+export async function getStaticProps(){
+	console.log('test revalidate')
+	try{
+
+	const response = await fetch(`http://localhost:3000/api/cities/10`);
+	const data = await response.json();
+
+	if(!response.ok){
+		console.error('Erro ao obter os dados');
+		return{
+			notFound: true
+		}
+	}
+
+	return {
+		props: {
+			cities: data,
+		},
+		revalidate: 2
+	}
+	} catch (error){
+		console.error(error);
+		return{
+			props:{
+				cities: []
+			},
+			revalidate: 2,
+		}
+	}
+
 }
