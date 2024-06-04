@@ -8,14 +8,33 @@
  * - O conteudo deve ser dinâmico
  */
 
+
+// Solução
+
+/*
+	Reutilizei o componente "Modal" para o modal de confirmação.
+	Modifiquei o modo que são criadas as funções de fechamento
+	e de confirmação, também o modo que é renderizado
+	o conteúdo para diferenciar do modal anterior.
+
+*/
+
 import { useState } from 'react';
-import Head from 'next/head';
 
 import styles from '@/styles/modal.module.css';
 import { Modal } from '@/components/Modal';
 
 export default function Home() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
+
+	const handleModalConfirm = () => {
+		setModalIsOpen(false);
+		alert('Confirmado com sucesso!');
+	}
+
+	const handleModalClose = () => {
+		setModalIsOpen(false);
+	}
 
 	return (
 		<>
@@ -26,6 +45,18 @@ export default function Home() {
 			</main>
 
 			{/* Renderizar modal de confirmação */}
+
+			<Modal
+				isOpen={modalIsOpen}
+				title="Confirmação"
+				onClose={handleModalClose}
+				onConfirm={handleModalConfirm}
+				
+			>
+				<div data-modal-content className={styles['modal-form']}>
+					<p>Tem certeza que deseja realizar esta ação?</p>
+				</div>
+			</Modal>
 		</>
 	);
 }
