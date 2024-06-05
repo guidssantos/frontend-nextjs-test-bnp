@@ -10,6 +10,7 @@
 import styles from '@/styles/lista.module.css';
 import { ICity } from '@/types/city.d';
 import API_URL from '@/utils/config';
+import { useEffect, useState } from 'react';
 
 interface ListaProps {
 	cities: ICity[];
@@ -17,13 +18,35 @@ interface ListaProps {
 
 export default function Lista({cities}: ListaProps) {
 
+	const [list, setList] = useState(cities);
+
+	async function getList() {
+		try {
+		const response = await fetch('/api/cities/10');
+		const newData = await response.json();
+
+		if (!response.ok) throw new Error('Erro ao obter os dados');
+
+			setList(newData);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+  useEffect(() => {
+	const interval = setInterval(() => {
+		getList();
+	}, 60000)
+	return () => clearInterval(interval);
+  }, [])
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.content}>
 				<h2>Lista de cidades</h2>
 
 				<div data-list-container>
-					{cities.map((city: ICity) => (
+					{list.map((city: ICity) => (
 						<div data-list-item key={city.id}>
 							{city.name}
 						</div>
@@ -36,23 +59,20 @@ export default function Lista({cities}: ListaProps) {
 
 export async function getStaticProps(){
 	try{
-	const response = await fetch(`${API_URL}/api/cities/10`, {next: {
-		revalidate: 60
-	}});
-	const data = await response.json();
+		const response = await fetch(`${API_URL}/api/cities/10`, {next: {revalidate: 60}});
+		const data = await response.json();
 
-	if(!response.ok){
-		console.error('Erro ao obter os dados');
-		return{
-			notFound: true
+		if(!response.ok){
+			console.error('Erro ao obter os dados');
+			return{
+				notFound: true
+			}
 		}
-	}
 
 	return {
 		props: {
 			cities: data,
-		},
-		revalidate: 60
+		}
 	}
 	} catch (error){
 		console.error(error);
@@ -60,7 +80,6 @@ export async function getStaticProps(){
 			props:{
 				cities: []
 			},
-			revalidate: 60,
 		}
 	}
 
