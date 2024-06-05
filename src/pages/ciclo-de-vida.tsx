@@ -27,24 +27,42 @@ type CicloDeVidaProps = {
 
 export default function CicloDeVida({ initialCount }: CicloDeVidaProps) {
 	const [showCounter, setShowCounter] = useState(false);
-	const [count, setCount] = useState(0);
 
 	function handleOcultCounterClick() {
 		setShowCounter((prevState) => !prevState);
 	}
 
 	useEffect(() => {
-		window.addEventListener('onCounterMount', (event: CustomEventInit) => {
+
+		function handleCounterMount() {
 			console.log('onCounterMount');
-		});
+		}
 
-		window.addEventListener('onCounterUnmount', (event: CustomEventInit) => {
+		function handleCounterUnmount() {
 			console.log('onCounterUnmount');
-		});
+		}
 
-		window.addEventListener('onCounterUpdate', (event: CustomEventInit) => {
+		function handleCounterUpdate(event: CustomEventInit) {
 			console.log('onCounterUpdate');
-		});
+			const updateCount = event.detail.value;
+			if (updateCount >= 10) {
+			    setShowCounter(false)
+			}
+		}
+
+			window.addEventListener('onCounterMount', handleCounterMount);
+
+			window.addEventListener('onCounterUnmount', handleCounterUnmount);
+
+			window.addEventListener('onCounterUpdate', handleCounterUpdate);
+		
+		return () => {
+		window.removeEventListener('onCounterMount', handleCounterMount);
+
+		window.removeEventListener('onCounterUnmount', handleCounterUnmount);
+
+		window.removeEventListener('onCounterUpdate', handleCounterUpdate);
+		}
 	}, []);
 
 	return (
@@ -59,7 +77,7 @@ export default function CicloDeVida({ initialCount }: CicloDeVidaProps) {
 						<h1>Exemplo de Ciclo de vida</h1>
 
 						<div data-content>
-							<Counter initialCount={initialCount} />
+							<Counter initialCount={initialCount}/>
 						</div>
 					</>
 				)}

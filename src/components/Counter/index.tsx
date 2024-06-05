@@ -9,15 +9,20 @@ export const Counter: React.FC<CounterProps> = ({ initialCount }) => {
 
 	useEffect(() => {
 		console.log('Componente montado!');
+		dispatchEvent(new CustomEvent('onCounterMount'))
 
 		return () => {
 			console.log('Componente desmontado!');
+			dispatchEvent(new CustomEvent('onCounterUnmount'))
 		};
 	}, []);
 
 	useEffect(() => {
-		console.log('Componente atualizado!');
-	});
+		if(count){
+			console.log('Componente atualizado!');
+			dispatchEvent(new CustomEvent('onCounterUpdate', { detail: { value: count } }))
+		}
+	},[count]);
 
 	const handleIncrement = () => {
 		setCount((prevCount) => prevCount + 1);

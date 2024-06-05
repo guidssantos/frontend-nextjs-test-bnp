@@ -10,10 +10,10 @@ export default function App({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>Teste Front-End - BNP</title>
 			</Head>
-
 			<MessageProvider>
 				<Component {...pageProps} />
 			</MessageProvider>
+
 		</>
 	);
 }
