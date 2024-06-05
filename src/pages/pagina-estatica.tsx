@@ -7,16 +7,15 @@
  * - A página deve ser atualizada a cada 1 minuto
  */
 
-import { useState } from 'react';
-
 import styles from '@/styles/lista.module.css';
 import { ICity } from '@/types/city.d';
 import API_URL from '@/utils/config';
 
-export default function Lista({cities}: any) {
-	const [list, _] = useState<Array<ICity>>(cities || []);
+interface ListaProps {
+	cities: ICity[];
+}
 
-
+export default function Lista({cities}: ListaProps) {
 
 	return (
 		<div className={styles.container}>
@@ -24,7 +23,7 @@ export default function Lista({cities}: any) {
 				<h2>Lista de cidades</h2>
 
 				<div data-list-container>
-					{list.map((city) => (
+					{cities.map((city: ICity) => (
 						<div data-list-item key={city.id}>
 							{city.name}
 						</div>
@@ -36,8 +35,6 @@ export default function Lista({cities}: any) {
 }
 
 export async function getStaticProps(){
-	console.log('test revalidate')
-	console.log(API_URL, 'verify API_URL')
 	try{
 	const response = await fetch(`${API_URL}/api/cities/10`);
 	const data = await response.json();
@@ -53,7 +50,7 @@ export async function getStaticProps(){
 		props: {
 			cities: data,
 		},
-		revalidate: 2
+		revalidate: 60
 	}
 	} catch (error){
 		console.error(error);
@@ -61,7 +58,7 @@ export async function getStaticProps(){
 			props:{
 				cities: []
 			},
-			revalidate: 2,
+			revalidate: 60,
 		}
 	}
 
