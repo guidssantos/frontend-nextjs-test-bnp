@@ -38,7 +38,7 @@ export default function Lista() {
 				<div data-list-container>
 					{/* Exemplo */}
 					{users.map((user) => (
-						<div data-list-item>ID {user.id} - Usuário {user.id} ({user.email})</div>
+						<div data-list-item>ID {user.id} - Usuário {user.name} ({user.email})</div>
 					))}
 				</div>
 			</div>

@@ -7,6 +7,12 @@
  * - A página deve ser atualizada a cada 1 minuto
  */
 
+// Solução
+
+/* A Lista foi atualizada para receber as cities como props, foi utilizado
+o getStaticProps para buscar os dados durante o momento da build, foi realizado
+o tratamento de erros e implementado a funcionalidade de atualização */
+
 import styles from '@/styles/lista.module.css';
 import { ICity } from '@/types/city.d';
 import API_URL from '@/utils/config';

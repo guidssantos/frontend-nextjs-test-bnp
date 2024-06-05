@@ -7,6 +7,13 @@
  * - Disparar as mensagens a partir dos botões abaixo
  */
 
+// Solução
+
+/* O contexto foi implementado para gerenciar as mensagens,
+ criei funções para adicionar mensagens e também remove-las
+depois de um tempo.  
+ */
+
 import styles from '@/styles/context-api.module.css';
 import { ToastMessage } from '@/components/ToastMessage';
 import {  useMessage } from '@/contexts/MessageContext';

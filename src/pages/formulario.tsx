@@ -9,6 +9,10 @@
  * - Lide com os possíveis erros
  */
 
+// Solução
+/* O formulario foi atualizado para usar o react-hook-form, foi implementado
+validações e tratamento de erros, e a API foi implementada e ajustada */
+
 import {SubmitHandler, useForm} from 'react-hook-form'
 import styles from '@/styles/formulario.module.css';
 import { IUserCreate } from '@/types/user';

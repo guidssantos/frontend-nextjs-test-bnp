@@ -10,6 +10,13 @@
  * - Utilize a interface IUser para tipar os dados
  */
 
+// Solução
+
+/* O problema foi solucionado atualizando a função para retornar uma lista
+de usuários predefinida. Foi adicionado uma verificação para garantia que a 
+rota só responda a requisições GET, retornando status 405 caso contrário.
+E foi definido o restante solicitado pelo exercício */
+
 import { NextApiRequest, NextApiResponse } from 'next/types';
 
 import { IUser } from '@/types/user.d';
@@ -28,6 +35,16 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 			id: 2,
 			name: 'Jane Doe',
 			email: 'janedoe@example.com'
+		},
+		{
+			id: 3,
+			name: 'Alex',
+			email: 'alex@example.com'
+		},
+		{
+			id: 4,
+			name: 'Bob',
+			email: 'bob@example.com'
 		}
 	];
 

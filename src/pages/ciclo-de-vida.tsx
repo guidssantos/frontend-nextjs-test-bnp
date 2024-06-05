@@ -15,6 +15,12 @@
  * 		no nextjs, você deve resolver este problema.
  */
 
+// Solução 
+/* Cada evento foi tratado para ser disparado somente uma vez e da maneira descrita no
+exercicio, retirei a opção do reactStrictMode pois isso fazia a disparada 
+mais de uma vez, fora isso fiz as verificações dentro do componente Counter
+para que o ciclo de vida fosse executado somente uma vez, de forma correta  */
+
 import { GetServerSideProps } from 'next/types';
 
 import styles from '@/styles/ciclo-de-vida.module.css';
